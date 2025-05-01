@@ -21,7 +21,15 @@ from sklearn.metrics import r2_score
 import mlflow
 
 import dagshub
-dagshub.init(repo_owner='pradnyesh2', repo_name='NetworkSecurity', mlflow=True)
+#dagshub.init(repo_owner='pradnyesh2', repo_name='NetworkSecurity', mlflow=True)
+
+dagshub_token = os.environ.get("DAGSHUB_ACCESS_TOKEN")
+
+if dagshub_token:
+    dagshub.init(repo_owner='pradnyesh2', repo_name='NetworkSecurity', mlflow=True, token=dagshub_token)
+else:
+    print("Warning: DAGSHUB_TOKEN environment variable not found. Authentication might fail.")
+    dagshub.init(repo_owner='pradnyesh2', repo_name='NetworkSecurity', mlflow=True)
 
 class ModelTrainer:
     def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
